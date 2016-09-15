@@ -1,6 +1,6 @@
 package arun.problems.ds.graphs;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 public abstract class Graph<T> {
@@ -20,14 +20,14 @@ public abstract class Graph<T> {
 	 * @param distance
 	 * @return
 	 */
-	public abstract List<T> getNeigbours(final T vertex, final Integer distance);
+	public abstract Collection<T> getNeigbours(final T vertex, final Integer distance);
 
 	/**
 	 * This method returns the neighbours of all the vertices at given distance.
 	 *
 	 * @return
 	 */
-	public abstract Map<T, List<T>> getNeigboursOfAll(final Integer distance);
+	public abstract Map<T, Collection<T>> getNeigboursOfAll(final Integer distance);
 	
 	/**
 	 * Returns the number of incoming edges for the given vertex.
@@ -67,7 +67,7 @@ public abstract class Graph<T> {
 	 * @param vertex
 	 * @return
 	 */
-	public List<T> getNeighbours(final T vertex) {
+	public Collection<T> getNeighbours(final T vertex) {
 		return getNeigbours(vertex, 1);
 	}
 	
@@ -119,4 +119,6 @@ public abstract class Graph<T> {
 	public int getNumberOfEdges() {
 		return numberOfEdges;
 	}
+
+	public abstract Boolean exists(T vertex);
 }

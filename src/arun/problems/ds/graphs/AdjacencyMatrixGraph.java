@@ -1,6 +1,7 @@
 package arun.problems.ds.graphs;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 	
 	public AdjacencyMatrixGraph() {
 		vertexList = new ArrayList<T>();
-		relationshipMatrix = new int[6][6];
+		relationshipMatrix = new int[7][7];
 	}
 
 	/* (non-Javadoc)
@@ -64,9 +65,9 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 	 * @see arun.problems.ds.graphs.Graph#getNeigboursOfAll(java.lang.Object)
 	 */
 	@Override
-	public Map<T, List<T>> getNeigboursOfAll(final Integer distance) {
+	public Map<T, Collection<T>> getNeigboursOfAll(final Integer distance) {
 
-		Map<T, List<T>> vertexMap = new HashMap<T, List<T>>();
+		Map<T, Collection<T>> vertexMap = new HashMap<T, Collection<T>>();
 
 		/* Find the relationship for each vertex at given distance using matrix multiplication. */
 		int[][] relationShipAtGiveDistMatrix = getNeighboursUsingMatrixMultiplication(relationshipMatrix, relationshipMatrix, distance);
@@ -89,12 +90,13 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 	 * @param distance
 	 * @return
 	 */
-	private int[][] getNeighboursUsingMatrixMultiplication(int[][] matrix1, int[][]matrix2, Integer distance) {
+	public int[][] getNeighboursUsingMatrixMultiplication(int[][] matrix1, int[][]matrix2, Integer distance) {
 
 		if(distance == 1) {
 			return matrix1;
 		}
 		int[][] multipliedMatrix = multiplyMatrix(matrix1, matrix2);
+		System.out.println("Stack seperator:");
 		return getNeighboursUsingMatrixMultiplication(multipliedMatrix, relationshipMatrix, distance-1);
 	}
 	
@@ -111,10 +113,11 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 				int value = 0;
 				for( int k = 0; k < length; k++) {
 					value = (value + (matrix1[i][k]) * (matrix2[k][j]));
-					System.out.println("Multiplying matrix1 ["+i+"]"+"["+k+"] and " + "matrix2 ["+k+"]"+"["+j+"]");
 				}
-				outMatrix[i][j] = value; 
+				outMatrix[i][j] = value;
+				System.out.print(" " + value);
 			}
+			System.out.println("");
 		}
 		
 		return outMatrix;
@@ -218,44 +221,77 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 		}
 	}
 
-	public static void main(String[] a) {
+	public static AdjacencyMatrixGraph<Person> populateGraph() {
 		
 		AdjacencyMatrixGraph<Person> ajGraph = new AdjacencyMatrixGraph<Person>();
 		Person arun = new Person("Arun", 12345);
-		Person dhruvil = new Person("Dhruvil", 23456);
-		Person gopi = new Person("Gopi", 34567);
-		Person reddy = new Person("Reddy", 45678);
-		Person siva = new Person("Siva", 56789);
+		Person srini = new Person("Srini", 23456);
+		Person naveen = new Person("Naveen", 34567);
+		Person ananth = new Person("Ananth", 45678);
+		Person dhina = new Person("Dhina", 56789);
+		Person sat = new Person("Sat", 67890);
+		Person master = new Person("Master", 78900);
 		
 		ajGraph.addVertex(arun);
-		ajGraph.addVertex(dhruvil);
-		ajGraph.addVertex(gopi);
-		ajGraph.addVertex(reddy);
-		ajGraph.addVertex(siva);
+		ajGraph.addVertex(srini);
+		ajGraph.addVertex(naveen);
+		ajGraph.addVertex(ananth);
+		ajGraph.addVertex(dhina);
+		ajGraph.addVertex(sat);
+		ajGraph.addVertex(master);
 		
-		ajGraph.addEdge(arun, reddy);
-		ajGraph.addEdge(reddy, siva);
-		ajGraph.addEdge(dhruvil, arun);
-		ajGraph.addEdge(gopi, dhruvil);
-		ajGraph.addEdge(gopi, arun);
-		ajGraph.addEdge(gopi, reddy);
+		ajGraph.addEdge(arun, srini);
+		ajGraph.addEdge(srini, arun);
+		ajGraph.addEdge(naveen, srini);
+		ajGraph.addEdge(srini, naveen);
+		ajGraph.addEdge(srini, dhina);
+		ajGraph.addEdge(dhina, srini);
+		ajGraph.addEdge(dhina, ananth);
+		ajGraph.addEdge(ananth, dhina);
+		ajGraph.addEdge(ananth, arun);
+		ajGraph.addEdge(arun, ananth);
+		ajGraph.addEdge(sat, naveen);
+		//ajGraph.addEdge(naveen, sat);
+		ajGraph.addEdge(sat, master);
+		ajGraph.addEdge(master, sat);
+		//ajGraph.addEdge(dhina, sat);
 		
-		ajGraph.printGraph();
 		
-		ajGraph.multiplyMatrix(ajGraph.relationshipMatrix, ajGraph.relationshipMatrix);
+		ajGraph.printGraph(ajGraph.relationshipMatrix);
+		
+		int[][] twoDotFriends = ajGraph.multiplyMatrix(ajGraph.relationshipMatrix, ajGraph.relationshipMatrix);
+		
+		System.out.println("Now displaying the two relation friends");
+		
+		ajGraph.printGraph(twoDotFriends);
+		
+		int[][] threeDotFriends = ajGraph.getNeighboursUsingMatrixMultiplication(ajGraph.relationshipMatrix,
+				ajGraph.relationshipMatrix,
+				3);		
+		
+		System.out.println("Now displaying the third relation friends");
+		
+		ajGraph.printGraph(threeDotFriends);
+		
+		return ajGraph;
 	}
 	
 	/**
 	 * Prints the relation.
 	 */
-	public void printGraph() {
-		for (int row = 0; row < getNumberOfVertices() ; row++) {
-			for (int column = 0; column < getNumberOfVertices() ; column++) {
-				if(relationshipMatrix[row][column] == 1) {
+	public void printGraph(int graph[][]) {
+		for (int row = 0; row < graph.length ; row++) {
+			for (int column = 0; column < graph.length ; column++) {
+				if((row != column) && graph[row][column] >= 1) {
 					System.out.println(vertexList.get(row) + " ---> " + vertexList.get(column));
 				}
 			}
 		}
+	}
+
+	@Override
+	public Boolean exists(T vertex) {
+		return vertexList == null ? false : vertexList.contains(vertex) ;
 	}
 
 }
