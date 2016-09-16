@@ -251,10 +251,10 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 		ajGraph.addEdge(ananth, arun);
 		ajGraph.addEdge(arun, ananth);
 		ajGraph.addEdge(sat, naveen);
-		//ajGraph.addEdge(naveen, sat);
+		ajGraph.addEdge(naveen, sat);
 		ajGraph.addEdge(sat, master);
 		ajGraph.addEdge(master, sat);
-		//ajGraph.addEdge(dhina, sat);
+		ajGraph.addEdge(dhina, sat);
 		
 		
 		ajGraph.printGraph(ajGraph.relationshipMatrix);
