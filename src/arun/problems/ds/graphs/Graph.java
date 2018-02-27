@@ -121,4 +121,6 @@ public abstract class Graph<T> {
 	}
 
 	public abstract Boolean exists(T vertex);
+	
+	public abstract Collection<T> getVertices();
 }

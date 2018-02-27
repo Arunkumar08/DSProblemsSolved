@@ -32,6 +32,10 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 	 */
 	private final List<T> vertexList;
 	
+	public List<T> getVertexList() {
+		return vertexList;
+	}
+
 	/* Matrix to store the relation. */
 	private int[][] relationshipMatrix;
 	
@@ -292,6 +296,12 @@ public class AdjacencyMatrixGraph<T> extends Graph<T> {
 	@Override
 	public Boolean exists(T vertex) {
 		return vertexList == null ? false : vertexList.contains(vertex) ;
+	}
+
+	@Override
+	public Collection<T> getVertices() {
+		// TODO Auto-generated method stub
+		return vertexList;
 	}
 
 }

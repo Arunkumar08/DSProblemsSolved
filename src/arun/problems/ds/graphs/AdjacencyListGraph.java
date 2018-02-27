@@ -115,4 +115,9 @@ public class AdjacencyListGraph<T> extends Graph<T> {
 		return false;
 	}
 
+	@Override
+	public Collection<T> getVertices() {
+		// TODO Auto-generated method stub
+		return adjacencyMap.keySet();
+	}
 }
