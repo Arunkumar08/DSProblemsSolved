@@ -140,6 +140,23 @@ public class BinaryHeap<T extends Comparable<T>> {
 		System.out.println(Arrays.toString(data));
 	}
 	
+	// This sorting O(nlogn) including the first time feeding of
+	// data into the heap.
+	public void sort() {
+		if(!isMinHeap) {
+			// Every iteration takes O(logn) time complexity
+			// As it has to re-arrange the Heap everytime.
+			while(size > 1) {
+				T top = data[0];
+				data[0] = data[size - 1];
+				data[size - 1] = top;
+				size--;
+				percolateDown();
+			}
+			printHeap();
+		}
+	}
+	
 	public static void main(String a[]) {
 		BinaryHeap<Integer> heap = new BinaryHeap<Integer>(Integer.class, false);
 		heap.insert(1);
@@ -148,9 +165,13 @@ public class BinaryHeap<T extends Comparable<T>> {
 		heap.insert(2);
 		heap.insert(0);
 		heap.insert(11);
-		
-		System.out.println(heap.pollPriority());
+		heap.insert(17);
+		heap.insert(90);
+		heap.insert(100);
+		heap.insert(67);
 		
 		heap.printHeap();
+		
+		heap.sort();
 	}
 }
